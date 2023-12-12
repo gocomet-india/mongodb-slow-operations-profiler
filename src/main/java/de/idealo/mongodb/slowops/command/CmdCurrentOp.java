@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by kay.agahd on 29.06.17.
@@ -37,7 +39,8 @@ public abstract class CmdCurrentOp implements ICommand {
                 "command",
                 "planSummary",
                 "numYield",
-                "active"));
+                "active",
+                "tag"));
 
         commandResultDto.setJsonFormattedColumn(6);
 
@@ -77,6 +80,7 @@ public abstract class CmdCurrentOp implements ICommand {
                             row.add(entryDoc.getString("planSummary"));
                             row.add(Util.getNumber(entryDoc, "numYields", 0));
                             row.add(entryDoc.getBoolean("active"));
+                            row.add(parseCommandTag(originatingCommand.equals("")?getJson(entryDoc, "command"):originatingCommand));
                             table.addRow(row);
 
                         }
@@ -102,4 +106,13 @@ public abstract class CmdCurrentOp implements ICommand {
         return "";
     }
 
+    private String parseCommandTag(String command){
+        Pattern pattern = Pattern.compile("\\$comment: \\\\\"(.*?)\\\\\"");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()) {
+            String commentValue = matcher.group(1);
+            return commentValue;
+        }
+        return "N/A";
+    }
 }
