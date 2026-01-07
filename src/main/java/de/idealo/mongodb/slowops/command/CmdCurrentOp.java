@@ -31,7 +31,7 @@ public abstract class CmdCurrentOp implements ICommand {
     public CmdCurrentOp() {
         commandResultDto = new CommandResultDto();
         commandResultDto.setTableHeader(Lists.newArrayList("dbs label",
-        		"opid",
+                "opid",
                 "microsecs running",
                 "secs running",
                 "op",
@@ -40,7 +40,8 @@ public abstract class CmdCurrentOp implements ICommand {
                 "planSummary",
                 "numYield",
                 "active",
-                "tag"));
+                "tag",
+                "client"));
 
         commandResultDto.setJsonFormattedColumn(6);
 
@@ -81,6 +82,8 @@ public abstract class CmdCurrentOp implements ICommand {
                             row.add(Util.getNumber(entryDoc, "numYields", 0));
                             row.add(entryDoc.getBoolean("active"));
                             row.add(parseCommandTag(originatingCommand.equals("")?getJson(entryDoc, "command"):originatingCommand));
+                            String clientVal = entryDoc.getString("client");
+                            row.add(clientVal != null ? clientVal.split(":")[0] : "N/A");
                             table.addRow(row);
 
                         }
