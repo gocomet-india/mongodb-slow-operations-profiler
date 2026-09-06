@@ -7,7 +7,6 @@ import com.mongodb.client.ListIndexesIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
-import com.mongodb.util.JSON;
 import de.idealo.mongodb.slowops.collector.ProfilingReader;
 import de.idealo.mongodb.slowops.dto.CommandResultDto;
 import de.idealo.mongodb.slowops.dto.ProfiledServerDto;
@@ -90,7 +89,7 @@ public class CmdIdxAccessStats implements ICommand {
         final HashMap<String, Document> indexesProperties = getIndexesProperties(collection);
 
         for(Document doc : stats){
-            LOG.info("doc: {}", JSON.serialize(doc));
+            LOG.info("doc: {}", doc.toJson());
             final ArrayList<Object> row = new ArrayList<Object>();
             row.add(dbsLabel);
             row.add(doc.getString("host"));

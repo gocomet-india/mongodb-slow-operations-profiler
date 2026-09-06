@@ -53,8 +53,7 @@ public class CommandResultDto {
     public String getTableBodyAsJson() {
         final Document doc = new Document();
         doc.append("content", tableBody.getTableRows());
-        //doc.toJson();
-        return com.mongodb.util.JSON.serialize(doc);
+        return doc.toJson();
     }
 
     public void setJsonFormattedColumn(int colNumber){
