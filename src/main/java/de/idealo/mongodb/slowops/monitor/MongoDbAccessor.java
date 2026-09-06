@@ -137,7 +137,7 @@ public class MongoDbAccessor {
     }
 
     public CodecRegistry getDefaultCodecRegistry(){
-        return mongo.getDefaultCodecRegistry();
+        return com.mongodb.MongoClientSettings.getDefaultCodecRegistry();
     }
 
     public MongoDatabase getMongoDatabase(String dbName) {
@@ -170,8 +170,9 @@ public class MongoDbAccessor {
 
     //none of both methods is able to fetch all mongod addresses of the whole cluster when router addresses are used to initialize mongo
     private List<ServerAddress> getAllAddresses(){
-        return mongo.getAllAddress();
-        //return mongo.getServerAddressList();
+        return mongo.getClusterDescription().getServerDescriptions().stream()
+                .map(com.mongodb.connection.ServerDescription::getAddress)
+                .collect(java.util.stream.Collectors.toList());
     }
 
     private void find(String dbName, String collName, int limit){
