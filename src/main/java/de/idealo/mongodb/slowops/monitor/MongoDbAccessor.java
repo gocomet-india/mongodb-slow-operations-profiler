@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import com.mongodb.*;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
-import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.conversions.Bson;
@@ -183,7 +182,7 @@ public class MongoDbAccessor {
 
         if(res != null){
             for(Document doc : res){
-                LOG.info("doc: {}", JSON.serialize(doc));
+                LOG.info("doc: {}", doc.toJson());
             }
         }
 
